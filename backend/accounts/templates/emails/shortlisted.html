@@ -1,0 +1,22 @@
+{% extends "emails/base_email.html" %}
+{% block content %}
+<h2 style="color:#1e293b; margin:0 0 16px; font-size:22px;">Congratulations, {{ candidate_name }}! 🎉</h2>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  We are pleased to inform you that you have been <strong style="color:#10b981;">shortlisted</strong> for the following position:
+</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f0fdf4; border-radius:12px; padding:20px; margin-bottom:24px;">
+<tr><td style="padding:20px;">
+  <p style="margin:0 0 8px; font-size:14px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Position</p>
+  <p style="margin:0 0 16px; font-size:18px; color:#1e293b; font-weight:700;">{{ job_title }}</p>
+  <p style="margin:0 0 8px; font-size:14px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Company</p>
+  <p style="margin:0; font-size:18px; color:#1e293b; font-weight:700;">{{ company_name }}</p>
+</td></tr>
+</table>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  Our team was impressed with your profile and we would like to move forward with your application. You will receive further communication regarding the next steps shortly.
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0;">
+  Best regards,<br>
+  <strong>{{ company_name }} Recruitment Team</strong>
+</p>
+{% endblock %}

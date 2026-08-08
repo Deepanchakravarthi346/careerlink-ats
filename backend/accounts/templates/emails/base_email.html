@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ subject }}</title>
+</head>
+<body style="margin:0; padding:0; background-color:#f4f6f8; font-family:'Segoe UI',system-ui,-apple-system,sans-serif;">
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f4f6f8; padding:40px 0;">
+<tr>
+<td align="center">
+<table role="presentation" width="600" cellspacing="0" cellpadding="0" style="background-color:#ffffff; border-radius:16px; overflow:hidden; box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+<!-- Header -->
+<tr>
+<td style="background:linear-gradient(135deg,#7c3aed,#6d28d9,#5b21b6); padding:32px 40px; text-align:center;">
+<h1 style="color:#ffffff; margin:0; font-size:24px; font-weight:700; letter-spacing:-0.5px;">CareerConnect</h1>
+<p style="color:rgba(255,255,255,0.8); margin:8px 0 0; font-size:14px;">Applicant Tracking System</p>
+</td>
+</tr>
+
+<!-- Body -->
+<tr>
+<td style="padding:40px;">
+{% block content %}{% endblock %}
+</td>
+</tr>
+
+<!-- Footer -->
+<tr>
+<td style="background-color:#f8fafc; padding:24px 40px; border-top:1px solid #e2e8f0; text-align:center;">
+<p style="color:#94a3b8; font-size:12px; margin:0 0 8px;">This is an automated message from CareerConnect ATS.</p>
+<p style="color:#94a3b8; font-size:12px; margin:0;">Please do not reply directly to this email.</p>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+</table>
+</body>
+</html>

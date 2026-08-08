@@ -1,0 +1,62 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+env/
+venv/
+.venv/
+
+# Django local database
+db.sqlite3
+*.sqlite3
+
+# Uploaded files
+media/
+backend/media/
+
+# Collected static files
+staticfiles/
+backend/staticfiles/
+
+# Environment/secrets
+.env
+.env.*
+!.env.example
+
+# Node
+node_modules/
+frontend/node_modules/
+
+# Vite build
+frontend/dist/
+dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# Temporary files
+scratch/
+
+# Temporary development files
+dummy.jpg
+frontend/log.txt
+frontend/log2.txt
+frontend/output.txt
+frontend/replaceBackBtns.cjs
+frontend/restore.py
+frontend/restore2.py
+frontend/restore3.py
+frontend/restore4.py
+frontend/restore5.pyS
+frontend/restore5.py

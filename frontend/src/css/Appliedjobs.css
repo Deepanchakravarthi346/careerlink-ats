@@ -1,0 +1,474 @@
+/* ========================================================
+   APPLIED JOBS - REAL SAAS ATS DESIGN
+   Inspired by LinkedIn Recruiter, Greenhouse, Wellfound
+======================================================== */
+
+.ats-page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  font-family: var(--font-family);
+  background-color: #F9FAFB; /* Slate 50 background */
+  min-height: 100vh;
+}
+
+/* -------------------------------------
+   HEADER
+-------------------------------------- */
+.ats-page-header {
+  margin-bottom: 40px;
+}
+
+.ats-page-header h1 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #111827; /* Slate 900 */
+  margin-bottom: 8px;
+  letter-spacing: -0.5px;
+}
+
+.ats-page-header p {
+  font-size: 16px;
+  color: #6B7280; /* Slate 500 */
+  font-weight: 400;
+}
+
+/* -------------------------------------
+   FILTER TOOLBAR
+-------------------------------------- */
+.ats-filter-card {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 12px 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+}
+
+.ats-filter-search {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ats-filter-icon {
+  color: #9CA3AF;
+  font-size: 18px;
+}
+
+.ats-filter-search input {
+  width: 100%;
+  border: none;
+  font-size: 15px;
+  color: #111827;
+  background: transparent;
+}
+
+.ats-filter-search input:focus {
+  outline: none;
+}
+
+.ats-filter-search input::placeholder {
+  color: #9CA3AF;
+}
+
+.ats-filter-divider {
+  width: 1px;
+  height: 32px;
+  background-color: #E5E7EB;
+  margin: 0 24px;
+}
+
+.ats-filter-dropdowns {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ats-filter-dropdowns select {
+  appearance: none;
+  background-color: transparent;
+  border: 1px solid transparent;
+  padding: 8px 32px 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #4B5563;
+  cursor: pointer;
+  border-radius: 6px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236B7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 8px center;
+  background-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.ats-filter-dropdowns select:hover {
+  background-color: #F3F4F6;
+}
+
+.ats-filter-dropdowns select:focus {
+  outline: none;
+  border-color: #D1D5DB;
+  background-color: #FFFFFF;
+}
+
+.ats-btn-reset {
+  font-weight: 600;
+  padding: 8px 16px;
+}
+
+/* -------------------------------------
+   APPLICATION CARDS
+-------------------------------------- */
+.ats-applications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.ats-app-card {
+  display: grid;
+  grid-template-areas: "logo center right";
+  grid-template-columns: 80px 1fr 220px;
+  gap: 32px;
+  align-items: center;
+  
+  width: 100%;
+  min-height: 200px;
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 28px;
+  
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ats-app-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 8px 12px -6px rgba(0, 0, 0, 0.04);
+}
+
+/* Left - Logo */
+.ats-card-logo {
+  grid-area: logo;
+  width: 80px;
+  height: 80px;
+  background-color: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #94A3B8;
+  align-self: flex-start;
+}
+
+/* Center - Information */
+.ats-card-center {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
+
+.ats-company-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827; /* Slate 900 */
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.ats-job-role {
+  font-size: 16px;
+  font-weight: 600;
+  color: #4B5563; /* Slate 600 */
+  margin-bottom: 16px;
+}
+
+.ats-meta-grid {
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 24px;
+  row-gap: 12px;
+}
+
+.ats-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #6B7280; /* Slate 500 */
+}
+
+.ats-meta-icon {
+  color: #9CA3AF;
+  font-size: 14px;
+}
+
+/* Right - Actions */
+.ats-card-right {
+  grid-area: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 24px;
+  height: 100%;
+  border-left: 1px solid #F3F4F6;
+  padding-left: 32px;
+}
+
+.ats-status-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.ats-btn-details {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+/* -------------------------------------
+   STATUS BADGES
+-------------------------------------- */
+.ats-badge {
+  font-size: 14px !important;
+  font-weight: 600 !important;
+  padding: 6px 14px !important;
+  border-radius: 24px !important;
+  letter-spacing: 0.3px;
+}
+
+.ats-badge-applied {
+  background-color: #EFF6FF !important;
+  color: #2563EB !important;
+}
+
+.ats-badge-shortlisted {
+  background-color: #FAF5FF !important;
+  color: #9333EA !important;
+}
+
+.ats-badge-interview {
+  background-color: #FFF7ED !important;
+  color: #EA580C !important;
+}
+
+.ats-badge-rejected {
+  background-color: #FEF2F2 !important;
+  color: #DC2626 !important;
+}
+
+.ats-badge-hired {
+  background-color: #F0FDF4 !important;
+  color: #16A34A !important;
+}
+
+/* -------------------------------------
+   EMPTY STATE & LOADING
+-------------------------------------- */
+.ats-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px dashed #D1D5DB;
+  text-align: center;
+}
+
+.ats-empty-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  background: #F3F4F6;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  color: #9CA3AF;
+  margin-bottom: 24px;
+}
+
+.ats-empty-state h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.ats-empty-state p {
+  font-size: 15px;
+  color: #6B7280;
+  margin-bottom: 24px;
+}
+
+.ats-btn-browse {
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.ats-skeleton-card {
+  padding: 0;
+  min-height: 200px;
+  overflow: hidden;
+}
+
+.ats-pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 48px;
+}
+
+/* ========================================================
+   RESPONSIVE REDESIGNS (NOT JUST STACKING)
+======================================================== */
+
+/* TABLET (Under 992px) */
+@media (max-width: 992px) {
+  .ats-filter-card {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  
+  .ats-filter-divider {
+    display: none;
+  }
+  
+  .ats-filter-dropdowns {
+    width: 100%;
+    border-top: 1px solid #E5E7EB;
+    padding-top: 16px;
+  }
+  
+  .ats-filter-dropdowns select {
+    flex: 1;
+  }
+  
+  .ats-app-card {
+    grid-template-areas: 
+      "logo center"
+      "right right";
+    grid-template-columns: 80px 1fr;
+    grid-template-rows: auto auto;
+    padding: 24px;
+    gap: 24px;
+  }
+  
+  .ats-card-right {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-left: none;
+    border-top: 1px solid #F3F4F6;
+    padding-left: 0;
+    padding-top: 24px;
+  }
+  
+  .ats-btn-details {
+    width: auto;
+    padding: 10px 24px;
+  }
+}
+
+/* MOBILE (Under 768px) */
+@media (max-width: 768px) {
+  .ats-page-container {
+    padding: 24px 16px;
+  }
+
+  .ats-filter-dropdowns {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .ats-app-card {
+    grid-template-areas: 
+      "logo center"
+      "meta meta"
+      "right right";
+    grid-template-columns: 60px 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .ats-card-logo {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+  }
+  
+  .ats-company-name {
+    font-size: 18px;
+    margin-bottom: 2px;
+  }
+  
+  .ats-job-role {
+    font-size: 14px;
+    margin-bottom: 0;
+  }
+
+  /* We restructure the center area on mobile to drop the meta tags down */
+  .ats-card-center {
+    justify-content: flex-start;
+  }
+  
+  .ats-meta-grid {
+    grid-area: meta;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    background: #F9FAFB;
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 8px;
+  }
+  
+  .ats-meta-item {
+    font-size: 13px;
+  }
+  
+  .ats-card-right {
+    padding-top: 16px;
+    gap: 16px;
+  }
+}
+
+/* SMALL MOBILE (Under 480px) */
+@media (max-width: 480px) {
+  .ats-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .ats-card-right {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .ats-status-container {
+    justify-content: flex-start;
+  }
+  
+  .ats-btn-details {
+    width: 100%;
+  }
+}

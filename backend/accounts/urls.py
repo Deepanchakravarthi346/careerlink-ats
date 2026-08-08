@@ -1,0 +1,51 @@
+from django.urls import path
+from .views import *
+from django.conf import settings
+from django.conf.urls.static import static
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
+urlpatterns = [
+    path("register/", Register.as_view()),
+    path("login/", Login.as_view()),
+    path("refresh/", TokenRefreshView.as_view()),
+    path("home/", Display_jobs.as_view()),
+    path("job/<int:id>/", Display_job_id.as_view()),
+    path("profile/", Profile_api.as_view()),
+    path("username/", Info.as_view()),
+    path("profilecheck/", Profile_checker.as_view()),
+    path("profileview/", Profile_view.as_view()),
+    path("profileupdate/", Update_profile.as_view()),
+    path("profiledetails/", Profile_view.as_view()),
+    path("jobdetails/<int:id>/", Job_details.as_view()),
+    path("applyingjob/", Save_job_details.as_view()),
+    path("appliedjobs/", See_applied_jobs.as_view()),
+    path("jobs/<str:keyword>/<str:location>/", Keyword_based_job_location.as_view()),
+    path("jobsuggestion/<str:keyword>/", Job_suggestion.as_view()),
+    path("locationsuggestion/<str:location>/", Location_suggestion.as_view()),
+    path("postjobs/", Post_job.as_view()),
+    path("myjobs/", My_jobs_view.as_view()),
+    path("applicants/<int:id>/", Applicant_details.as_view()),
+    path("applicantprofile/<int:id>/", Applicant_profile.as_view()),
+    path("applicantstatus/<int:id>/<int:ap_id>/", Applicant_status.as_view()),
+    path("rejectstatus/<int:id>/<int:ap_id>/", Reject_status.as_view()),
+    path("searchpostedjobs/<str:job>/", Search_posted_jobs.as_view()),
+    path("jobsbyid/<int:id>/", Display_posted_job_id.as_view()),
+    path("displayeditjob/<int:id>/", Display_edit_posted_job.as_view()),
+    path("editjob/<int:id>/", Edit_posted_job.as_view()),
+    path("deletejob/<int:id>/", Delete_job.as_view()),
+    path("dashboard/", Recuiter_dashboard.as_view()),
+    path("dashboardapplicant/", View_applicant_from_dashboard.as_view()),
+    path("dashboarjobtotal/", View_total_jobs.as_view()),
+    path("dashboardreject/", View_total_rejects.as_view()),
+    path("dashboardshortlist/", View_total_shortlist.as_view()),
+    path("compatibility/<int:job_id>/<int:applicant_id>/", CandidateCompatibility.as_view()),
+    path("compare/<int:job_id>/<int:applicant1_id>/<int:applicant2_id>/", CandidateComparison.as_view()),
+    path("pipeline/<int:job_id>/<int:applicant_id>/", UpdatePipelineStage.as_view()),
+    path("notes/<int:job_id>/<int:applicant_id>/", CandidateNotesView.as_view()),
+    path("notes/delete/<int:note_id>/", DeleteNoteView.as_view()),
+    path("interviews/<int:job_id>/<int:applicant_id>/", CandidateInterviewsView.as_view()),
+    path("interviews/update/<int:interview_id>/", UpdateInterviewView.as_view()),
+    path("analytics/", RecruiterAnalytics.as_view()),
+    path("activity/<int:job_id>/<int:applicant_id>/", ActivityLogView.as_view()),
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

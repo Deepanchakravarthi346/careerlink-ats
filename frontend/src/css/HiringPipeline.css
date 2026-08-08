@@ -1,0 +1,398 @@
+/* ===== Hiring Pipeline ===== */
+
+.pipeline-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* Header */
+.pipeline-header {
+  background: linear-gradient(135deg, #0c4a6e, #0369a1, #0284c7);
+  border-radius: 16px;
+  padding: 32px;
+  color: white;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pipeline-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -15%;
+  width: 280px;
+  height: 280px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.pipeline-back-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.pipeline-back-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(-2px);
+}
+
+.pipeline-header-content h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  position: relative;
+}
+
+.pipeline-header-content p {
+  font-size: 1.05rem;
+  opacity: 0.85;
+  margin: 0;
+  position: relative;
+}
+
+/* Pipeline Stepper Tabs */
+.pipeline-stepper {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 4px 16px;
+  margin-bottom: 24px;
+  scrollbar-width: thin;
+}
+
+.pipeline-stepper::-webkit-scrollbar {
+  height: 4px;
+}
+
+.pipeline-stepper::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 2px;
+}
+
+.pipeline-stage-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  min-width: fit-content;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+
+.pipeline-stage-pill:hover {
+  border-color: #0284c7;
+  background: #f0f9ff;
+}
+
+.pipeline-stage-pill.pipeline-active {
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  border-color: #0284c7;
+  color: white;
+  box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+}
+
+.pipeline-stage-pill.pipeline-active .pipeline-stage-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: white;
+}
+
+.pipeline-stage-pill.pipeline-active .pipeline-stage-number {
+  background: rgba(255, 255, 255, 0.3);
+  color: white;
+}
+
+.pipeline-stage-pill.pipeline-has-candidates {
+  border-color: #93c5fd;
+}
+
+.pipeline-rejected-pill {
+  border-color: #fecaca;
+  color: #991b1b;
+}
+
+.pipeline-rejected-pill:hover {
+  background: #fef2f2;
+  border-color: #ef4444;
+}
+
+.pipeline-rejected-pill.pipeline-active {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  border-color: #ef4444;
+  color: white;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.pipeline-stage-number {
+  width: 24px;
+  height: 24px;
+  background: #e2e8f0;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #475569;
+  flex-shrink: 0;
+}
+
+.pipeline-stage-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.pipeline-stage-count {
+  background: #f1f5f9;
+  color: #475569;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+}
+
+/* Empty State */
+.pipeline-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: #64748b;
+  background: white;
+  border-radius: 14px;
+  border: 2px dashed #e2e8f0;
+}
+
+.pipeline-empty h2 {
+  margin: 0 0 8px;
+  color: #475569;
+}
+
+.pipeline-empty p {
+  margin: 0;
+}
+
+/* Candidate Cards */
+.pipeline-candidates {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.pipeline-card {
+  background: white;
+  border-radius: 14px;
+  padding: 20px 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.pipeline-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.pipeline-card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.pipeline-card-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.pipeline-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0284c7, #0369a1);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.pipeline-card-info h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.pipeline-card-info p {
+  margin: 2px 0;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.pipeline-card-info small {
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+.pipeline-stage-select {
+  padding: 10px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #334155;
+  background: #f8fafc;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 180px;
+}
+
+.pipeline-stage-select:focus {
+  outline: none;
+  border-color: #0284c7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+}
+
+/* Mini Pipeline Progress */
+.pipeline-mini {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  margin-bottom: 12px;
+}
+
+.pipeline-mini-step {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.pipeline-mini-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #e2e8f0;
+  border: 2px solid #e2e8f0;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.pipeline-mini-line {
+  flex: 1;
+  height: 3px;
+  background: #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.pipeline-mini-done .pipeline-mini-dot {
+  background: #0284c7;
+  border-color: #0284c7;
+}
+
+.pipeline-mini-done .pipeline-mini-line {
+  background: #0284c7;
+}
+
+.pipeline-mini-current .pipeline-mini-dot {
+  background: white;
+  border: 3px solid #0284c7;
+  box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.2);
+  width: 18px;
+  height: 18px;
+}
+
+.pipeline-mini-rejected .pipeline-mini-dot {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+
+.pipeline-mini-rejected .pipeline-mini-line {
+  background: #fecaca;
+}
+
+/* Card Bottom Actions */
+.pipeline-card-bottom {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pipeline-btn {
+  padding: 8px 16px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pipeline-btn:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pipeline-card-top {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .pipeline-stage-select {
+    width: 100%;
+  }
+
+  .pipeline-mini-dot {
+    width: 10px;
+    height: 10px;
+  }
+
+  .pipeline-mini-current .pipeline-mini-dot {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .pipeline-page {
+    padding: 16px 12px 40px;
+  }
+
+  .pipeline-header {
+    padding: 24px 16px;
+    border-radius: 12px;
+  }
+
+  .pipeline-header-content h1 {
+    font-size: 1.3rem;
+  }
+
+  .pipeline-card {
+    padding: 16px;
+  }
+}

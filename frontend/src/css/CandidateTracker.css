@@ -1,0 +1,554 @@
+/* ===== Candidate Tracker — Notes & Interviews ===== */
+
+.tracker-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 30px 20px 60px;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+/* Header */
+.tracker-header {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9, #5b21b6);
+  border-radius: 16px;
+  padding: 32px;
+  color: white;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tracker-header::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  right: -15%;
+  width: 280px;
+  height: 280px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.tracker-back-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+}
+
+.tracker-back-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateX(-2px);
+}
+
+.tracker-header-content h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  position: relative;
+}
+
+.tracker-header-content p {
+  font-size: 1.05rem;
+  opacity: 0.85;
+  margin: 0;
+  position: relative;
+}
+
+/* Tabs */
+.tracker-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tracker-tab {
+  flex: 1;
+  padding: 14px 20px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: white;
+  color: #475569;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.tracker-tab:hover {
+  border-color: #7c3aed;
+  background: #faf5ff;
+}
+
+.tracker-tab-active {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  border-color: #7c3aed;
+  color: white;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+/* Section */
+.tracker-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Add Note Form */
+.tracker-add-form {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+}
+
+.tracker-textarea {
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.3s ease;
+  margin-bottom: 12px;
+  box-sizing: border-box;
+}
+
+.tracker-textarea:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.tracker-add-btn {
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+}
+
+.tracker-add-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+/* Empty State */
+.tracker-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: #64748b;
+  background: white;
+  border-radius: 14px;
+  border: 2px dashed #e2e8f0;
+}
+
+.tracker-empty h3 {
+  margin: 0 0 8px;
+  color: #475569;
+}
+
+.tracker-empty p {
+  margin: 0;
+}
+
+/* Note Cards */
+.tracker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tracker-note-card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+  border-left: 4px solid #7c3aed;
+  transition: all 0.2s ease;
+}
+
+.tracker-note-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.tracker-note-text {
+  margin: 0 0 12px;
+  font-size: 0.95rem;
+  color: #334155;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.tracker-note-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tracker-note-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: #94a3b8;
+}
+
+.tracker-delete-btn {
+  padding: 6px 14px;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tracker-delete-btn:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+}
+
+/* Schedule Toggle */
+.tracker-schedule-toggle {
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+  align-self: flex-start;
+}
+
+.tracker-schedule-toggle:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
+}
+
+/* Interview Form */
+.tracker-interview-form {
+  background: white;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+}
+
+.tracker-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.tracker-form-full {
+  grid-column: 1 / -1;
+}
+
+.tracker-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.tracker-form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #475569;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.tracker-form-group select,
+.tracker-form-group input,
+.tracker-form-group textarea {
+  padding: 10px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+  box-sizing: border-box;
+}
+
+.tracker-form-group select:focus,
+.tracker-form-group input:focus,
+.tracker-form-group textarea:focus {
+  outline: none;
+  border-color: #7c3aed;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+/* Interview Cards */
+.tracker-interview-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.tracker-interview-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.tracker-interview-top {
+  margin-bottom: 12px;
+}
+
+.tracker-interview-info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.tracker-type-badge {
+  padding: 5px 14px;
+  background: linear-gradient(135deg, #7c3aed, #6d28d9);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.tracker-status-badge {
+  padding: 4px 12px;
+  border: 1px solid;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.tracker-interview-details {
+  margin-bottom: 14px;
+}
+
+.tracker-interview-details p {
+  margin: 6px 0;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.tracker-interview-details a {
+  color: #7c3aed;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.tracker-interview-details a:hover {
+  text-decoration: underline;
+}
+
+.tracker-interview-details small {
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.tracker-interview-notes {
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border-left: 3px solid #7c3aed;
+  font-style: italic;
+}
+
+.tracker-interview-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  padding-top: 12px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.tracker-complete-btn {
+  padding: 6px 14px;
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tracker-complete-btn:hover {
+  background: #d1fae5;
+  border-color: #10b981;
+}
+
+.tracker-cancel-btn {
+  padding: 6px 14px;
+  background: #fef3c7;
+  color: #d97706;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tracker-cancel-btn:hover {
+  background: #fde68a;
+  border-color: #f59e0b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .tracker-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tracker-tabs {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  .tracker-page {
+    padding: 16px 12px 40px;
+  }
+
+  .tracker-header {
+    padding: 24px 16px;
+    border-radius: 12px;
+  }
+
+  .tracker-header-content h1 {
+    font-size: 1.3rem;
+  }
+
+  .tracker-note-footer {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}
+
+/* =========================================
+   ENTERPRISE EXTENSIONS (Appended)
+========================================= */
+
+/* Activity Timeline */
+.tracker-timeline-container {
+  background: white;
+  border-radius: 14px;
+  padding: 32px 24px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f1f5f9;
+}
+
+.tracker-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  padding-left: 20px;
+}
+
+.tracker-timeline::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: #e2e8f0;
+}
+
+.tracker-timeline-item {
+  display: flex;
+  position: relative;
+  gap: 20px;
+}
+
+.tracker-timeline-dot {
+  width: 32px;
+  height: 32px;
+  background: white;
+  border: 2px solid #e2e8f0;
+  border-radius: 50%;
+  position: absolute;
+  left: -35px;
+  top: -2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  box-shadow: 0 0 0 4px white;
+  z-index: 1;
+}
+
+.tracker-timeline-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.tracker-timeline-content h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  color: #1e293b;
+  font-weight: 600;
+}
+
+.tracker-timeline-content p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.tracker-timeline-content small {
+  font-size: 0.8rem;
+  color: #94a3b8;
+  margin-top: 4px;
+}
+
+/* Form Sections */
+.tracker-section-title {
+  grid-column: 1 / -1;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 16px 0 8px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #f1f5f9;
+}
+
+/* Checkbox specific styling */
+.tracker-checkbox-group {
+  margin-top: 8px;
+  padding: 12px 16px;
+  background: #f5f3ff;
+  border: 1px solid #ddd6fe;
+  border-radius: 8px;
+}
+
+.tracker-checkbox-group span {
+  font-weight: 600;
+  color: #5b21b6;
+  font-size: 0.95rem;
+}

@@ -1,0 +1,89 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-card);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  z-index: var(--z-sticky);
+}
+
+.logo {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: var(--spacing-4);
+  align-items: center;
+}
+
+.nav-links a,
+.nav-links span {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  cursor: pointer;
+}
+
+.nav-links a:hover,
+.nav-links span:hover {
+  color: var(--color-primary);
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+}
+
+.welcome-text {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.welcome-text strong {
+  color: var(--color-text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.auth-buttons {
+  display: flex;
+  gap: var(--spacing-2);
+}
+
+/* Responsive Navbar */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    padding: var(--spacing-2);
+    gap: var(--spacing-2);
+  }
+  
+  .nav-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-2);
+  }
+  
+  .right-section {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

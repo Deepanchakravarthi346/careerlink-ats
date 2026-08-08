@@ -1,0 +1,29 @@
+{% extends "emails/base_email.html" %}
+{% block content %}
+<h2 style="color:#1e293b; margin:0 0 16px; font-size:22px;">Welcome to the Team! 🚀</h2>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  Dear {{ candidate_name }},
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 24px;">
+  We are delighted to officially welcome you to <strong>{{ company_name }}</strong>! Your hiring process for the <strong>{{ job_title }}</strong> position is now complete.
+</p>
+
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background:linear-gradient(135deg,#ecfdf5,#d1fae5); border-radius:12px; margin-bottom:24px;">
+<tr><td style="padding:24px; text-align:center;">
+  <p style="margin:0 0 8px; font-size:48px;">🎉</p>
+  <p style="margin:0 0 4px; font-size:20px; color:#065f46; font-weight:700;">You're Hired!</p>
+  <p style="margin:0; font-size:16px; color:#047857;">{{ job_title }} at {{ company_name }}</p>
+</td></tr>
+</table>
+
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  Our HR team will be in touch shortly with onboarding details, including your start date, required documents, and orientation schedule.
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  We are excited to have you on board and look forward to your contributions to our team!
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0;">
+  Welcome aboard,<br>
+  <strong>{{ company_name }} Recruitment Team</strong>
+</p>
+{% endblock %}

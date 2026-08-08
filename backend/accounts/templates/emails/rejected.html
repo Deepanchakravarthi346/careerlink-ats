@@ -1,0 +1,28 @@
+{% extends "emails/base_email.html" %}
+{% block content %}
+<h2 style="color:#1e293b; margin:0 0 16px; font-size:22px;">Application Update</h2>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  Dear {{ candidate_name }},
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  Thank you for your interest in the <strong>{{ job_title }}</strong> position at <strong>{{ company_name }}</strong> and for taking the time to apply.
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  After careful consideration, we have decided to move forward with other candidates whose qualifications more closely match our current requirements. This was a difficult decision, as we received many strong applications.
+</p>
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#fef2f2; border-radius:12px; padding:20px; margin-bottom:24px;">
+<tr><td style="padding:20px;">
+  <p style="margin:0 0 8px; font-size:14px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Position</p>
+  <p style="margin:0 0 16px; font-size:18px; color:#1e293b; font-weight:700;">{{ job_title }}</p>
+  <p style="margin:0 0 8px; font-size:14px; color:#64748b; text-transform:uppercase; letter-spacing:0.5px; font-weight:600;">Company</p>
+  <p style="margin:0; font-size:18px; color:#1e293b; font-weight:700;">{{ company_name }}</p>
+</td></tr>
+</table>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  We encourage you to apply for future openings that match your experience. We wish you all the best in your career journey.
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0;">
+  Best regards,<br>
+  <strong>{{ company_name }} Recruitment Team</strong>
+</p>
+{% endblock %}

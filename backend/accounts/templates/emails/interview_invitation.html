@@ -1,0 +1,80 @@
+{% extends "emails/base_email.html" %}
+{% block content %}
+<h2 style="color:#1e293b; margin:0 0 16px; font-size:22px;">Interview Invitation 📅</h2>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  Dear {{ candidate_name }},
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 24px;">
+  We are excited to invite you for an interview for the <strong>{{ job_title }}</strong> position at <strong>{{ company_name }}</strong>. Please find the details below:
+</p>
+
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#f5f3ff; border-radius:12px; margin-bottom:24px;">
+<tr><td style="padding:24px;">
+
+  <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; width:40%; vertical-align:top;">Interview Round</td>
+    <td style="padding:8px 0; font-size:15px; color:#1e293b; font-weight:700;">{{ interview_round }}</td>
+  </tr>
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Date</td>
+    <td style="padding:8px 0; font-size:15px; color:#1e293b; font-weight:700;">{{ interview_date }}</td>
+  </tr>
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Time</td>
+    <td style="padding:8px 0; font-size:15px; color:#1e293b; font-weight:700;">{{ interview_time }} ({{ time_zone }})</td>
+  </tr>
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Duration</td>
+    <td style="padding:8px 0; font-size:15px; color:#1e293b;">{{ duration_minutes }} minutes</td>
+  </tr>
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Meeting Type</td>
+    <td style="padding:8px 0; font-size:15px; color:#1e293b;">{{ meeting_type }}</td>
+  </tr>
+  {% if meeting_link %}
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Meeting Link</td>
+    <td style="padding:8px 0; font-size:15px;"><a href="{{ meeting_link }}" style="color:#7c3aed; text-decoration:none; font-weight:600;">Join Meeting →</a></td>
+  </tr>
+  {% endif %}
+  {% if office_address %}
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Office Address</td>
+    <td style="padding:8px 0; font-size:15px; color:#1e293b;">{{ office_address }}</td>
+  </tr>
+  {% endif %}
+  {% if interviewer_name %}
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Interviewer</td>
+    <td style="padding:8px 0; font-size:15px; color:#1e293b;">{{ interviewer_name }}</td>
+  </tr>
+  {% endif %}
+  {% if recruiter_email %}
+  <tr>
+    <td style="padding:8px 0; font-size:14px; color:#64748b; font-weight:600; vertical-align:top;">Contact</td>
+    <td style="padding:8px 0; font-size:15px;"><a href="mailto:{{ recruiter_email }}" style="color:#7c3aed; text-decoration:none;">{{ recruiter_email }}</a></td>
+  </tr>
+  {% endif %}
+  </table>
+
+</td></tr>
+</table>
+
+{% if additional_instructions %}
+<table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="background-color:#fffbeb; border-radius:12px; border-left:4px solid #f59e0b; margin-bottom:24px;">
+<tr><td style="padding:16px 20px;">
+  <p style="margin:0 0 4px; font-size:13px; color:#92400e; font-weight:700; text-transform:uppercase;">Additional Instructions</p>
+  <p style="margin:0; font-size:14px; color:#78350f; line-height:1.6;">{{ additional_instructions }}</p>
+</td></tr>
+</table>
+{% endif %}
+
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0 0 20px;">
+  Please confirm your attendance by replying to this email. If you have any questions or need to reschedule, please reach out to us.
+</p>
+<p style="color:#475569; font-size:15px; line-height:1.7; margin:0;">
+  Best regards,<br>
+  <strong>{{ company_name }} Recruitment Team</strong>
+</p>
+{% endblock %}
