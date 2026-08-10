@@ -22,6 +22,7 @@ import logging
 
 email_logger = logging.getLogger(__name__)
 
+
 class Register(APIView):
     def post(self, request):
         user_data_register = Register_serializer(data=request.data)
@@ -45,15 +46,17 @@ class Login(APIView):
 
 class Display_jobs(APIView):
     def get(self, request):
-        jobs_details = Job.objects.all().select_related('posted_by')
-        
-        search = request.GET.get('search', '').strip()
-        job_type = request.GET.get('job_type', '').strip()
-        location = request.GET.get('location', '').strip()
-        sort = request.GET.get('sort', '-posted_on') # Default sort by newest
+        jobs_details = Job.objects.all().select_related("posted_by")
+
+        search = request.GET.get("search", "").strip()
+        job_type = request.GET.get("job_type", "").strip()
+        location = request.GET.get("location", "").strip()
+        sort = request.GET.get("sort", "-posted_on")  # Default sort by newest
 
         if search:
-            jobs_details = jobs_details.filter(Q(title__icontains=search) | Q(company__icontains=search))
+            jobs_details = jobs_details.filter(
+                Q(title__icontains=search) | Q(company__icontains=search)
+            )
         if job_type:
             jobs_details = jobs_details.filter(jop_type__iexact=job_type)
         if location:
@@ -62,7 +65,7 @@ class Display_jobs(APIView):
         try:
             jobs_details = jobs_details.order_by(sort)
         except Exception:
-            jobs_details = jobs_details.order_by('-posted_on')
+            jobs_details = jobs_details.order_by("-posted_on")
 
         paginator = StandardResultsSetPagination()
         page = paginator.paginate_queryset(jobs_details, request, view=self)
@@ -78,7 +81,9 @@ class Display_job_id(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id):
-        job_details_id = get_object_or_404(Job.objects.select_related('posted_by'), id=id)
+        job_details_id = get_object_or_404(
+            Job.objects.select_related("posted_by"), id=id
+        )
         applied_job = Application.objects.filter(
             applicant=request.user, job_id=id
         ).exists()
@@ -122,7 +127,7 @@ class Profile_view(APIView):
 
     def get(self, request):
         profile_data, created = Profile.objects.get_or_create(user=request.user)
-        profile_serializer = Profile_view_serializer(profile_data).data
+        profile_serializer = Profile_serializer(profile_data).data
         return Response(profile_serializer)
 
 
@@ -150,7 +155,7 @@ class Job_details(APIView):
         applied_job = Application.objects.filter(
             applicant=request.user, job_id=id
         ).exists()
-        job_data = get_object_or_404(Job.objects.select_related('posted_by'), id=id)
+        job_data = get_object_or_404(Job.objects.select_related("posted_by"), id=id)
         job_data_serilizer = Job_show_serializer(job_data).data
         return Response(job_data_serilizer, status=HTTP_200_OK)
 
@@ -186,21 +191,23 @@ class See_applied_jobs(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        applied_jobs = Application.objects.filter(applicant=request.user).select_related('job', 'job__posted_by')
-        
-        search = request.GET.get('search', '').strip()
-        sort = request.GET.get('sort', '-applied_on')
-        status = request.GET.get('status', '').strip()
+        applied_jobs = Application.objects.filter(
+            applicant=request.user
+        ).select_related("job", "job__posted_by")
+
+        search = request.GET.get("search", "").strip()
+        sort = request.GET.get("sort", "-applied_on")
+        status = request.GET.get("status", "").strip()
 
         if search:
             applied_jobs = applied_jobs.filter(job__title__icontains=search)
         if status:
             applied_jobs = applied_jobs.filter(status__iexact=status)
-            
+
         try:
             applied_jobs = applied_jobs.order_by(sort)
         except Exception:
-            applied_jobs = applied_jobs.order_by('-applied_on')
+            applied_jobs = applied_jobs.order_by("-applied_on")
 
         paginator = StandardResultsSetPagination()
         page = paginator.paginate_queryset(applied_jobs, request, view=self)
@@ -263,17 +270,19 @@ class My_jobs_view(APIView):
 
     def get(self, request):
         my_jobs = Job.objects.filter(posted_by=request.user)
-        
-        search = request.GET.get('search', '').strip()
-        sort = request.GET.get('sort', '-posted_on')
-        
+
+        search = request.GET.get("search", "").strip()
+        sort = request.GET.get("sort", "-posted_on")
+
         if search:
-            my_jobs = my_jobs.filter(Q(title__icontains=search) | Q(company__icontains=search))
-            
+            my_jobs = my_jobs.filter(
+                Q(title__icontains=search) | Q(company__icontains=search)
+            )
+
         try:
             my_jobs = my_jobs.order_by(sort)
         except Exception:
-            my_jobs = my_jobs.order_by('-posted_on')
+            my_jobs = my_jobs.order_by("-posted_on")
 
         paginator = StandardResultsSetPagination()
         page = paginator.paginate_queryset(my_jobs, request, view=self)
@@ -289,21 +298,26 @@ class Applicant_details(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, id):
-        applicant = Application.objects.filter(job_id=id, job__posted_by=request.user).select_related('applicant', 'applicant__profile')
-        
-        search = request.GET.get('search', '').strip()
-        sort = request.GET.get('sort', '-applied_on')
-        status = request.GET.get('status', '').strip()
+        applicant = Application.objects.filter(
+            job_id=id, job__posted_by=request.user
+        ).select_related("applicant", "applicant__profile")
+
+        search = request.GET.get("search", "").strip()
+        sort = request.GET.get("sort", "-applied_on")
+        status = request.GET.get("status", "").strip()
 
         if search:
-            applicant = applicant.filter(Q(applicant__username__icontains=search) | Q(applicant__email__icontains=search))
+            applicant = applicant.filter(
+                Q(applicant__username__icontains=search)
+                | Q(applicant__email__icontains=search)
+            )
         if status:
             applicant = applicant.filter(status__iexact=status)
 
         try:
             applicant = applicant.order_by(sort)
         except Exception:
-            applicant = applicant.order_by('-applied_on')
+            applicant = applicant.order_by("-applied_on")
 
         paginator = StandardResultsSetPagination()
         page = paginator.paginate_queryset(applicant, request, view=self)
@@ -328,13 +342,26 @@ class Applicant_status(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, id, ap_id):
-        applicant_job_status = get_object_or_404(Application, job_id=id, applicant_id=ap_id, job__posted_by=request.user)
+        applicant_job_status = get_object_or_404(
+            Application, job_id=id, applicant_id=ap_id, job__posted_by=request.user
+        )
         applicant_job_status.status = "ShortListed"
         applicant_job_status.save()
         # Enterprise: Email notification + Activity log
         try:
-            send_shortlisted_email(applicant_job_status.applicant.username, applicant_job_status.applicant.email, applicant_job_status.job.title, applicant_job_status.job.company)
-            ActivityLog.objects.create(job=applicant_job_status.job, applicant=applicant_job_status.applicant, recruiter=request.user, action="Candidate Shortlisted", details=f"Shortlisted for {applicant_job_status.job.title}")
+            send_shortlisted_email(
+                applicant_job_status.applicant.username,
+                applicant_job_status.applicant.email,
+                applicant_job_status.job.title,
+                applicant_job_status.job.company,
+            )
+            ActivityLog.objects.create(
+                job=applicant_job_status.job,
+                applicant=applicant_job_status.applicant,
+                recruiter=request.user,
+                action="Candidate Shortlisted",
+                details=f"Shortlisted for {applicant_job_status.job.title}",
+            )
         except Exception as e:
             email_logger.error(f"Email/log error in Applicant_status: {e}")
         serializer = Applicant_status_selializer(applicant_job_status)
@@ -345,13 +372,26 @@ class Reject_status(APIView):
     permission_classes = [IsAuthenticated]
 
     def patch(self, request, id, ap_id):
-        applicant_job_status = get_object_or_404(Application, job_id=id, applicant_id=ap_id, job__posted_by=request.user)
+        applicant_job_status = get_object_or_404(
+            Application, job_id=id, applicant_id=ap_id, job__posted_by=request.user
+        )
         applicant_job_status.status = "Rejected"
         applicant_job_status.save()
         # Enterprise: Email notification + Activity log
         try:
-            send_rejected_email(applicant_job_status.applicant.username, applicant_job_status.applicant.email, applicant_job_status.job.title, applicant_job_status.job.company)
-            ActivityLog.objects.create(job=applicant_job_status.job, applicant=applicant_job_status.applicant, recruiter=request.user, action="Candidate Rejected", details=f"Rejected for {applicant_job_status.job.title}")
+            send_rejected_email(
+                applicant_job_status.applicant.username,
+                applicant_job_status.applicant.email,
+                applicant_job_status.job.title,
+                applicant_job_status.job.company,
+            )
+            ActivityLog.objects.create(
+                job=applicant_job_status.job,
+                applicant=applicant_job_status.applicant,
+                recruiter=request.user,
+                action="Candidate Rejected",
+                details=f"Rejected for {applicant_job_status.job.title}",
+            )
         except Exception as e:
             email_logger.error(f"Email/log error in Reject_status: {e}")
         serializer = Applicant_status_selializer(applicant_job_status)
@@ -444,12 +484,16 @@ class View_applicant_from_dashboard(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        status_filter = request.GET.get('status', None)
+        status_filter = request.GET.get("status", None)
         if status_filter:
-            applicants = Application.objects.filter(job__posted_by=request.user, status=status_filter).select_related('job', 'applicant', 'applicant__profile')
+            applicants = Application.objects.filter(
+                job__posted_by=request.user, status=status_filter
+            ).select_related("job", "applicant", "applicant__profile")
         else:
-            applicants = Application.objects.filter(job__posted_by=request.user).select_related('job', 'applicant', 'applicant__profile')
-            
+            applicants = Application.objects.filter(
+                job__posted_by=request.user
+            ).select_related("job", "applicant", "applicant__profile")
+
         serializer = View_applicant_from_dashboard_serializer(
             applicants, many=True, context={"request": request}
         )
@@ -471,7 +515,7 @@ class View_total_rejects(APIView):
     def get(self, request):
         reject = Application.objects.filter(
             job__posted_by=request.user, status="Rejected"
-        ).select_related('job', 'applicant', 'applicant__profile')
+        ).select_related("job", "applicant", "applicant__profile")
         serializer = View_applicant_from_dashboard_serializer(
             reject, many=True, context={"request": request}
         )
@@ -484,7 +528,7 @@ class View_total_shortlist(APIView):
     def get(self, request):
         reject = Application.objects.filter(
             job__posted_by=request.user, status="ShortListed"
-        ).select_related('job', 'applicant', 'applicant__profile')
+        ).select_related("job", "applicant", "applicant__profile")
         serializer = View_applicant_from_dashboard_serializer(
             reject, many=True, context={"request": request}
         )
@@ -589,9 +633,7 @@ class CandidateComparison(APIView):
                 "headline": profile.headline,
                 "location": profile.location,
                 "about": profile.about,
-                "skills": [
-                    s.strip() for s in profile.skills.split(",") if s.strip()
-                ],
+                "skills": [s.strip() for s in profile.skills.split(",") if s.strip()],
                 "degree": profile.degree,
                 "field_of_study": profile.field_of_study,
                 "institution": profile.institution,
@@ -635,8 +677,20 @@ class UpdatePipelineStage(APIView):
         application.save()
         # Enterprise: Email notification + Activity log
         try:
-            send_status_change_email(application.applicant.username, application.applicant.email, application.job.title, application.job.company, new_status)
-            ActivityLog.objects.create(job=application.job, applicant=application.applicant, recruiter=request.user, action="Status Changed", details=f"Status changed to {new_status}")
+            send_status_change_email(
+                application.applicant.username,
+                application.applicant.email,
+                application.job.title,
+                application.job.company,
+                new_status,
+            )
+            ActivityLog.objects.create(
+                job=application.job,
+                applicant=application.applicant,
+                recruiter=request.user,
+                action="Status Changed",
+                details=f"Status changed to {new_status}",
+            )
         except Exception as e:
             email_logger.error(f"Email/log error in UpdatePipelineStage: {e}")
         serializer = Applicant_status_selializer(application)
@@ -647,7 +701,9 @@ class CandidateNotesView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, job_id, applicant_id):
-        notes = RecruiterNote.objects.filter(job_id=job_id, applicant_id=applicant_id).order_by("-created_at")
+        notes = RecruiterNote.objects.filter(
+            job_id=job_id, applicant_id=applicant_id
+        ).order_by("-created_at")
         serializer = RecruiterNoteSerializer(notes, many=True)
         return Response(serializer.data, status=HTTP_200_OK)
 
@@ -655,15 +711,14 @@ class CandidateNotesView(APIView):
         job = get_object_or_404(Job, id=job_id)
         applicant = get_object_or_404(User, id=applicant_id)
         note_text = request.data.get("note")
-        
+
         if not note_text:
-            return Response({"error": "Note text is required"}, status=HTTP_400_BAD_REQUEST)
-            
+            return Response(
+                {"error": "Note text is required"}, status=HTTP_400_BAD_REQUEST
+            )
+
         note = RecruiterNote.objects.create(
-            job=job,
-            applicant=applicant,
-            recruiter=request.user,
-            note=note_text
+            job=job, applicant=applicant, recruiter=request.user, note=note_text
         )
         serializer = RecruiterNoteSerializer(note)
         return Response(serializer.data, status=HTTP_201_CREATED)
@@ -671,11 +726,14 @@ class CandidateNotesView(APIView):
 
 class DeleteNoteView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def delete(self, request, note_id):
         note = get_object_or_404(RecruiterNote, id=note_id)
         if note.recruiter != request.user:
-            return Response({"error": "You can only delete your own notes"}, status=HTTP_403_FORBIDDEN)
+            return Response(
+                {"error": "You can only delete your own notes"},
+                status=HTTP_403_FORBIDDEN,
+            )
         note.delete()
         return Response(status=HTTP_204_NO_CONTENT)
 
@@ -684,18 +742,22 @@ class CandidateInterviewsView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request, job_id, applicant_id):
-        interviews = InterviewSchedule.objects.filter(job_id=job_id, applicant_id=applicant_id).order_by("scheduled_date")
+        interviews = InterviewSchedule.objects.filter(
+            job_id=job_id, applicant_id=applicant_id
+        ).order_by("scheduled_date")
         serializer = InterviewScheduleSerializer(interviews, many=True)
         return Response(serializer.data, status=HTTP_200_OK)
 
     def post(self, request, job_id, applicant_id):
         job = get_object_or_404(Job, id=job_id)
         applicant = get_object_or_404(User, id=applicant_id)
-        
+
         serializer = InterviewScheduleSerializer(data=request.data)
         if serializer.is_valid():
-            interview = serializer.save(recruiter=request.user, job=job, applicant=applicant)
-            
+            interview = serializer.save(
+                recruiter=request.user, job=job, applicant=applicant
+            )
+
             # Enterprise: Create InterviewDetail, send email, log activity
             try:
                 detail_data = {
@@ -705,65 +767,117 @@ class CandidateInterviewsView(APIView):
                     "office_address": request.data.get("office_address", ""),
                     "interviewer_name": request.data.get("interviewer_name", ""),
                     "recruiter_email": request.data.get("recruiter_email", ""),
-                    "additional_instructions": request.data.get("additional_instructions", ""),
+                    "additional_instructions": request.data.get(
+                        "additional_instructions", ""
+                    ),
                     "internal_notes": request.data.get("internal_notes", ""),
                     "send_email": request.data.get("send_email", True),
                 }
                 InterviewDetail.objects.create(interview=interview, **detail_data)
-                
+
                 # Activity log
-                ActivityLog.objects.create(job=job, applicant=applicant, recruiter=request.user, action="Interview Scheduled", details=f"{detail_data['interview_round']} round scheduled")
-                
+                ActivityLog.objects.create(
+                    job=job,
+                    applicant=applicant,
+                    recruiter=request.user,
+                    action="Interview Scheduled",
+                    details=f"{detail_data['interview_round']} round scheduled",
+                )
+
                 # Send email if checkbox is enabled
                 if detail_data["send_email"]:
                     scheduled_dt = interview.scheduled_date
                     email_data = {
                         **detail_data,
-                        "interview_date": scheduled_dt.strftime("%d/%m/%Y") if scheduled_dt else "",
-                        "interview_time": scheduled_dt.strftime("%I:%M %p") if scheduled_dt else "",
+                        "interview_date": (
+                            scheduled_dt.strftime("%d/%m/%Y") if scheduled_dt else ""
+                        ),
+                        "interview_time": (
+                            scheduled_dt.strftime("%I:%M %p") if scheduled_dt else ""
+                        ),
                         "meeting_link": interview.meeting_link or "",
                         "duration_minutes": interview.duration_minutes,
                     }
-                    send_interview_scheduled_email(applicant.username, applicant.email, job.title, job.company, email_data)
-                    ActivityLog.objects.create(job=job, applicant=applicant, recruiter=request.user, action="Email Sent", details="Interview invitation email sent")
+                    send_interview_scheduled_email(
+                        applicant.username,
+                        applicant.email,
+                        job.title,
+                        job.company,
+                        email_data,
+                    )
+                    ActivityLog.objects.create(
+                        job=job,
+                        applicant=applicant,
+                        recruiter=request.user,
+                        action="Email Sent",
+                        details="Interview invitation email sent",
+                    )
             except Exception as e:
-                email_logger.error(f"Enterprise extension error in CandidateInterviewsView: {e}")
-            
+                email_logger.error(
+                    f"Enterprise extension error in CandidateInterviewsView: {e}"
+                )
+
             return Response(serializer.data, status=HTTP_201_CREATED)
-        
+
         print("InterviewScheduleSerializer errors:", serializer.errors)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
 
 class UpdateInterviewView(APIView):
     permission_classes = [IsAuthenticated]
-    
+
     def patch(self, request, interview_id):
         interview = get_object_or_404(InterviewSchedule, id=interview_id)
         new_status = request.data.get("status")
         if new_status not in [choice[0] for choice in InterviewSchedule.STATUS_CHOICES]:
             return Response({"error": "Invalid status"}, status=HTTP_400_BAD_REQUEST)
-        
+
         old_status = interview.status
         interview.status = new_status
         interview.save()
-        
+
         # Enterprise: Email notification + Activity log
         try:
-            detail = getattr(interview, 'detail', None)
+            detail = getattr(interview, "detail", None)
             if new_status == "Cancelled" and old_status != "Cancelled":
                 recruiter_note = detail.internal_notes if detail else ""
-                send_interview_cancelled_email(interview.applicant.username, interview.applicant.email, interview.job.title, interview.job.company, recruiter_note)
-                ActivityLog.objects.create(job=interview.job, applicant=interview.applicant, recruiter=request.user, action="Interview Cancelled", details=f"{interview.interview_type} interview cancelled")
-                ActivityLog.objects.create(job=interview.job, applicant=interview.applicant, recruiter=request.user, action="Email Sent", details="Interview cancellation email sent")
+                send_interview_cancelled_email(
+                    interview.applicant.username,
+                    interview.applicant.email,
+                    interview.job.title,
+                    interview.job.company,
+                    recruiter_note,
+                )
+                ActivityLog.objects.create(
+                    job=interview.job,
+                    applicant=interview.applicant,
+                    recruiter=request.user,
+                    action="Interview Cancelled",
+                    details=f"{interview.interview_type} interview cancelled",
+                )
+                ActivityLog.objects.create(
+                    job=interview.job,
+                    applicant=interview.applicant,
+                    recruiter=request.user,
+                    action="Email Sent",
+                    details="Interview cancellation email sent",
+                )
             elif new_status == "Completed" and old_status != "Completed":
-                ActivityLog.objects.create(job=interview.job, applicant=interview.applicant, recruiter=request.user, action="Interview Completed", details=f"{interview.interview_type} interview completed")
+                ActivityLog.objects.create(
+                    job=interview.job,
+                    applicant=interview.applicant,
+                    recruiter=request.user,
+                    action="Interview Completed",
+                    details=f"{interview.interview_type} interview completed",
+                )
         except Exception as e:
-            email_logger.error(f"Enterprise extension error in UpdateInterviewView: {e}")
-        
+            email_logger.error(
+                f"Enterprise extension error in UpdateInterviewView: {e}"
+            )
+
         serializer = InterviewScheduleSerializer(interview)
         return Response(serializer.data, status=HTTP_200_OK)
-        
+
     def delete(self, request, interview_id):
         interview = get_object_or_404(InterviewSchedule, id=interview_id)
         interview.delete()
@@ -775,75 +889,130 @@ class RecruiterAnalytics(APIView):
 
     def get(self, request):
         six_months_ago = datetime.today() - timedelta(days=180)
-        
+
         # 1. Jobs posted per month
         jobs = Job.objects.filter(posted_by=request.user, posted_on__gte=six_months_ago)
-        jobs_per_month = jobs.annotate(month=TruncMonth('posted_on')).values('month').annotate(count=Count('id')).order_by('month')
-        
+        jobs_per_month = (
+            jobs.annotate(month=TruncMonth("posted_on"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("month")
+        )
+
         # 2. Applications per month
-        apps = Application.objects.filter(job__posted_by=request.user, applied_on__gte=six_months_ago)
-        apps_per_month = apps.annotate(month=TruncMonth('applied_on')).values('month').annotate(count=Count('id')).order_by('month')
-        
+        apps = Application.objects.filter(
+            job__posted_by=request.user, applied_on__gte=six_months_ago
+        )
+        apps_per_month = (
+            apps.annotate(month=TruncMonth("applied_on"))
+            .values("month")
+            .annotate(count=Count("id"))
+            .order_by("month")
+        )
+
         # Format month names for frontend (e.g. 'Jan')
         months_dict = {}
         for i in range(5, -1, -1):
-            m = (datetime.today() - timedelta(days=i*30)).strftime('%b')
-            months_dict[m] = {'month': m, 'jobs': 0, 'applications': 0}
-            
+            m = (datetime.today() - timedelta(days=i * 30)).strftime("%b")
+            months_dict[m] = {"month": m, "jobs": 0, "applications": 0}
+
         for item in jobs_per_month:
-            m_name = item['month'].strftime('%b')
+            m_name = item["month"].strftime("%b")
             if m_name in months_dict:
-                months_dict[m_name]['jobs'] = item['count']
-                
+                months_dict[m_name]["jobs"] = item["count"]
+
         for item in apps_per_month:
-            m_name = item['month'].strftime('%b')
+            m_name = item["month"].strftime("%b")
             if m_name in months_dict:
-                months_dict[m_name]['applications'] = item['count']
-                
+                months_dict[m_name]["applications"] = item["count"]
+
         monthly_trends = list(months_dict.values())
-        
+
         # 3. Overall Stats
         total_apps = Application.objects.filter(job__posted_by=request.user).count()
         if total_apps > 0:
-            shortlist_rate = round((Application.objects.filter(job__posted_by=request.user, status='ShortListed').count() / total_apps) * 100)
-            reject_rate = round((Application.objects.filter(job__posted_by=request.user, status='Rejected').count() / total_apps) * 100)
-            hire_rate = round((Application.objects.filter(job__posted_by=request.user, status='Hired').count() / total_apps) * 100)
+            shortlist_rate = round(
+                (
+                    Application.objects.filter(
+                        job__posted_by=request.user, status="ShortListed"
+                    ).count()
+                    / total_apps
+                )
+                * 100
+            )
+            reject_rate = round(
+                (
+                    Application.objects.filter(
+                        job__posted_by=request.user, status="Rejected"
+                    ).count()
+                    / total_apps
+                )
+                * 100
+            )
+            hire_rate = round(
+                (
+                    Application.objects.filter(
+                        job__posted_by=request.user, status="Hired"
+                    ).count()
+                    / total_apps
+                )
+                * 100
+            )
         else:
             shortlist_rate = reject_rate = hire_rate = 0
-            
+
         total_jobs = Job.objects.filter(posted_by=request.user).count()
         avg_apps_per_job = round(total_apps / total_jobs) if total_jobs > 0 else 0
-        
+
         # 4. Most Applied Jobs
-        top_jobs = Job.objects.filter(posted_by=request.user).annotate(app_count=Count('application')).order_by('-app_count')[:5]
-        most_applied_jobs = [{'title': job.title, 'applications': job.app_count} for job in top_jobs]
-        
+        top_jobs = (
+            Job.objects.filter(posted_by=request.user)
+            .annotate(app_count=Count("application"))
+            .order_by("-app_count")[:5]
+        )
+        most_applied_jobs = [
+            {"title": job.title, "applications": job.app_count} for job in top_jobs
+        ]
+
         # 5. Top Skills
         all_skills = []
         for job in Job.objects.filter(posted_by=request.user):
-            all_skills.extend([s.strip().lower() for s in job.skills.split(',')])
-            
+            all_skills.extend([s.strip().lower() for s in job.skills.split(",")])
+
         skill_counts = {}
         for skill in all_skills:
             if skill:
                 skill_counts[skill] = skill_counts.get(skill, 0) + 1
-        top_skills = sorted([{'name': k, 'value': v} for k, v in skill_counts.items()], key=lambda x: x['value'], reverse=True)[:6]
-        
-        # 6. Pipeline distribution
-        status_counts = Application.objects.filter(job__posted_by=request.user).values('status').annotate(count=Count('id'))
-        pipeline_dist = [{'name': item['status'], 'value': item['count']} for item in status_counts]
+        top_skills = sorted(
+            [{"name": k, "value": v} for k, v in skill_counts.items()],
+            key=lambda x: x["value"],
+            reverse=True,
+        )[:6]
 
-        return Response({
-            'monthly_trends': monthly_trends,
-            'total_applications': total_apps,
-            'shortlist_rate': shortlist_rate,
-            'reject_rate': reject_rate,
-            'hire_rate': hire_rate,
-            'avg_apps_per_job': avg_apps_per_job,
-            'most_applied_jobs': most_applied_jobs,
-            'top_skills': top_skills,
-            'pipeline_dist': pipeline_dist
-        }, status=HTTP_200_OK)
+        # 6. Pipeline distribution
+        status_counts = (
+            Application.objects.filter(job__posted_by=request.user)
+            .values("status")
+            .annotate(count=Count("id"))
+        )
+        pipeline_dist = [
+            {"name": item["status"], "value": item["count"]} for item in status_counts
+        ]
+
+        return Response(
+            {
+                "monthly_trends": monthly_trends,
+                "total_applications": total_apps,
+                "shortlist_rate": shortlist_rate,
+                "reject_rate": reject_rate,
+                "hire_rate": hire_rate,
+                "avg_apps_per_job": avg_apps_per_job,
+                "most_applied_jobs": most_applied_jobs,
+                "top_skills": top_skills,
+                "pipeline_dist": pipeline_dist,
+            },
+            status=HTTP_200_OK,
+        )
 
 
 class ActivityLogView(APIView):
@@ -851,6 +1020,7 @@ class ActivityLogView(APIView):
     GET: Fetch activity timeline for a specific candidate on a specific job.
     Completely isolated — does not affect any existing view.
     """
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request, job_id, applicant_id):
@@ -859,4 +1029,3 @@ class ActivityLogView(APIView):
         ).order_by("-created_at")
         serializer = ActivityLogSerializer(activities, many=True)
         return Response(serializer.data, status=HTTP_200_OK)
-
