@@ -22,12 +22,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-f-86)9-dupand)@$4_%#c5x0#@hl1hu2z9a(h3569wle65*^6_")
+SECRET_KEY = os.getenv(
+    "SECRET_KEY", "django-insecure-f-86)9-dupand)@$4_%#c5x0#@hl1hu2z9a(h3569wle65*^6_"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else ["*", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = (
+    os.getenv("ALLOWED_HOSTS", "").split(",")
+    if os.getenv("ALLOWED_HOSTS")
+    else ["*", "localhost", "127.0.0.1"]
+)
 
 
 # Application definition
@@ -82,7 +88,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 
 DATABASES = {
     "default": dj_database_url.config(
-        default='postgresql://postgres:deepan@2004@localhost:5432/jobportal',
+        default="postgresql://postgres:deepan@2004@localhost:5432/jobportal",
         conn_max_age=600,
         conn_health_checks=True,
     )
@@ -125,20 +131,24 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")] if os.path.exists(os.path.join(BASE_DIR, "static")) else []
+STATICFILES_DIRS = (
+    [os.path.join(BASE_DIR, "static")]
+    if os.path.exists(os.path.join(BASE_DIR, "static"))
+    else []
+)
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 if os.getenv("AWS_STORAGE_BUCKET_NAME"):
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-1')
-    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-    MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    AWS_S3_REGION_NAME = os.getenv("AWS_S3_REGION_NAME", "us-east-1")
+    AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
 AUTH_USER_MODEL = "accounts.User"
 
 CORS_ALLOWED_ORIGINS = [
@@ -146,6 +156,8 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Create React App default port
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
+    "https://careerlink-ats-omega.vercel.app",
+    "https://careerlink-7mzp9eypm-this-is-end.vercel.app",
 ]
 if os.getenv("FRONTEND_URL"):
     CORS_ALLOWED_ORIGINS.append(os.getenv("FRONTEND_URL").strip("/"))
