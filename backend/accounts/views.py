@@ -125,15 +125,27 @@ class Profile_checker(APIView):
 class Profile_view(APIView):
     permission_classes = [IsAuthenticated]
 
-
     def get(self, request):
-        profile_data = Profile.objects.filter(user=request.user).first()
+        try:
+            profile_data = Profile.objects.filter(user=request.user).first()
 
-        if not profile_data:
-            return Response({"detail": "Profile not found."}, status=404)
+            if not profile_data:
+                return Response({"detail": "Profile not found."}, status=404)
 
-        profile_serializer = Profile_serializer(profile_data).data
-        return Response(profile_serializer)
+            profile_serializer = Profile_serializer(profile_data).data
+            return Response(profile_serializer)
+
+        except Exception as e:
+            import traceback
+
+            return Response(
+                {
+                    "error": str(e),
+                    "error_type": type(e).__name__,
+                    "traceback": traceback.format_exc(),
+                },
+                status=500,
+            )
 
 
 class Update_profile(APIView):
