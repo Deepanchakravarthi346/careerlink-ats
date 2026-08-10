@@ -11,8 +11,9 @@ window.fetch = async (...args) => {
 
   // 2. If the response is 401 Unauthorized, attempt to refresh the token
   // Ignore 401s on the login endpoint, as they indicate incorrect credentials
-  const isLoginRequest = typeof resource === 'string' && resource.includes('/accounts/login/');
-  
+  const isLoginRequest =
+    typeof resource === "string" && resource.includes("/accounts/login/");
+
   if (response.status === 401 && !isLoginRequest) {
     const refreshToken = localStorage.getItem("refreshTokens");
 
@@ -20,19 +21,19 @@ window.fetch = async (...args) => {
       try {
         // Call refresh endpoint directly using originalFetch to avoid infinite loops
         const refreshResponse = await originalFetch(
-          "http://127.0.0.1:8000/accounts/refresh/",
+          "https://careerlink-ats.onrender.com/accounts/refresh/",
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({ refresh: refreshToken }),
-          }
+          },
         );
 
         if (refreshResponse.ok) {
           const data = await refreshResponse.json();
-          
+
           // Save the new tokens
           localStorage.setItem("accessTokens", data.access);
           if (data.refresh) {
@@ -50,16 +51,15 @@ window.fetch = async (...args) => {
               config.headers["Authorization"] = `Bearer ${data.access}`;
             }
           } else {
-             config = {
-                headers: {
-                   "Authorization": `Bearer ${data.access}`
-                }
-             };
+            config = {
+              headers: {
+                Authorization: `Bearer ${data.access}`,
+              },
+            };
           }
 
           // 4. Retry the original request with the new token
           return await originalFetch(resource, config);
-          
         } else {
           // Refresh token itself is invalid/expired
           throw new Error("Refresh token expired");

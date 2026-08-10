@@ -47,6 +47,7 @@ function MyProfile() {
         setIsLoading(false);
       });
   }, [access_token]);
+  
 
   if (isLoading) {
     return (

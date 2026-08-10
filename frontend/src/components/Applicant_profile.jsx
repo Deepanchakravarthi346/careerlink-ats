@@ -2,7 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import BackButton from "./ui/BackButton";
 import "../css/Applicant_profile.css";
-import { FaEnvelope, FaMapMarkerAlt, FaGithub, FaLinkedin, FaFilePdf, FaUserTie, FaGraduationCap, FaAlignLeft, FaTools, FaChartLine, FaArrowLeft, FaUser } from "react-icons/fa";
+import {
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaGithub,
+  FaLinkedin,
+  FaFilePdf,
+  FaUserTie,
+  FaGraduationCap,
+  FaAlignLeft,
+  FaTools,
+  FaChartLine,
+  FaArrowLeft,
+  FaUser,
+} from "react-icons/fa";
 import Button from "./ui/Button";
 import Badge from "./ui/Badge";
 import Skeleton from "./ui/Skeleton";
@@ -40,7 +53,10 @@ const Applicant_profile = () => {
   if (isLoading) {
     return (
       <div className="applicant-profile-page">
-        <Skeleton type="card" style={{ height: "250px", marginBottom: "var(--spacing-5)" }} />
+        <Skeleton
+          type="card"
+          style={{ height: "250px", marginBottom: "var(--spacing-5)" }}
+        />
         <div className="ap-content-grid">
           <Skeleton type="card" style={{ height: "400px" }} />
           <Skeleton type="card" style={{ height: "300px" }} />
@@ -51,22 +67,32 @@ const Applicant_profile = () => {
 
   if (!profile) {
     return (
-      <div className="applicant-profile-page" style={{ textAlign: 'center', padding: '50px' }}>
+      <div
+        className="applicant-profile-page"
+        style={{ textAlign: "center", padding: "50px" }}
+      >
         <h2>Profile Not Found</h2>
         <BackButton />
       </div>
     );
   }
 
-  const skills = profile.skills?.split(",").map((skill) => skill.trim()).filter(s => s) || [];
+  const skills =
+    profile.skills
+      ?.split(",")
+      .map((skill) => skill.trim())
+      .filter((s) => s) || [];
 
   return (
     <div className="applicant-profile-page">
       <div className="ap-header">
         <BackButton />
-        
+
         {job_id && (
-          <Button variant="primary" onClick={() => navigate(`/compatibility/${job_id}/${id}`)}>
+          <Button
+            variant="primary"
+            onClick={() => navigate(`/compatibility/${job_id}/${id}`)}
+          >
             <FaChartLine /> View Compatibility Score
           </Button>
         )}
@@ -75,7 +101,7 @@ const Applicant_profile = () => {
       <div className="ap-hero-card">
         <div className="ap-avatar-container">
           {profile.profile_picture ? (
-            <img src={`${API_BASE}${profile.profile_picture}`} alt="Profile" />
+            <img src={profile.profile_picture} alt="Profile" />
           ) : (
             <FaUser />
           )}
@@ -83,7 +109,9 @@ const Applicant_profile = () => {
 
         <div className="ap-info-container">
           <h1 className="ap-name">{profile.username}</h1>
-          <div className="ap-headline">{profile.headline || "No headline provided"}</div>
+          <div className="ap-headline">
+            {profile.headline || "No headline provided"}
+          </div>
 
           <div className="ap-contact-grid">
             <div className="ap-contact-item">
@@ -98,18 +126,22 @@ const Applicant_profile = () => {
 
           <div className="ap-action-buttons">
             {profile.resume && (
-              <Button 
+              <Button
                 variant="primary"
-                onClick={() => window.open(`${API_BASE}${profile.resume}`, "_blank")}
+                onClick={() => window.open(profile.resume, "_blank")}
               >
                 <FaFilePdf /> View Resume
               </Button>
             )}
-            
+
             {job_id && (
-              <Button 
+              <Button
                 variant="secondary"
-                style={{ backgroundColor: '#8b5cf6', borderColor: '#8b5cf6', color: 'white' }}
+                style={{
+                  backgroundColor: "#8b5cf6",
+                  borderColor: "#8b5cf6",
+                  color: "white",
+                }}
                 onClick={() => navigate(`/tracker/${job_id}/${id}`)}
               >
                 📝 Applicant Tracker
@@ -127,7 +159,8 @@ const Applicant_profile = () => {
               <h2>About Candidate</h2>
             </div>
             <div className="ap-text-content">
-              {profile.about || "This candidate hasn't provided an about section yet."}
+              {profile.about ||
+                "This candidate hasn't provided an about section yet."}
             </div>
           </div>
 
@@ -139,7 +172,9 @@ const Applicant_profile = () => {
             {skills.length > 0 ? (
               <div className="ap-skills-wrapper">
                 {skills.map((skill, index) => (
-                  <Badge key={index} variant="secondary">{skill}</Badge>
+                  <Badge key={index} variant="secondary">
+                    {skill}
+                  </Badge>
                 ))}
               </div>
             ) : (
@@ -155,13 +190,20 @@ const Applicant_profile = () => {
             {profile.degree || profile.institution ? (
               <div className="ap-education-block">
                 <div className="ap-edu-degree">{profile.degree}</div>
-                <div className="ap-edu-school">{profile.field_of_study && `${profile.field_of_study} at `}{profile.institution}</div>
+                <div className="ap-edu-school">
+                  {profile.field_of_study && `${profile.field_of_study} at `}
+                  {profile.institution}
+                </div>
                 {(profile.start_year || profile.end_year) && (
-                  <div className="ap-edu-years">{profile.start_year} - {profile.end_year}</div>
+                  <div className="ap-edu-years">
+                    {profile.start_year} - {profile.end_year}
+                  </div>
                 )}
               </div>
             ) : (
-              <div className="ap-text-content">No education details provided.</div>
+              <div className="ap-text-content">
+                No education details provided.
+              </div>
             )}
           </div>
         </div>
@@ -174,19 +216,41 @@ const Applicant_profile = () => {
             </div>
             <div className="ap-links-list">
               {profile.git_hub ? (
-                <a href={profile.git_hub.startsWith('http') ? profile.git_hub : `https://${profile.git_hub}`} target="_blank" rel="noreferrer" className="ap-link-item">
+                <a
+                  href={
+                    profile.git_hub.startsWith("http")
+                      ? profile.git_hub
+                      : `https://${profile.git_hub}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ap-link-item"
+                >
                   <FaGithub size={24} /> GitHub Profile
                 </a>
               ) : (
-                <div className="ap-link-item" style={{opacity: 0.5}}><FaGithub size={24} /> No GitHub link</div>
+                <div className="ap-link-item" style={{ opacity: 0.5 }}>
+                  <FaGithub size={24} /> No GitHub link
+                </div>
               )}
 
               {profile.linkedin ? (
-                <a href={profile.linkedin.startsWith('http') ? profile.linkedin : `https://${profile.linkedin}`} target="_blank" rel="noreferrer" className="ap-link-item">
+                <a
+                  href={
+                    profile.linkedin.startsWith("http")
+                      ? profile.linkedin
+                      : `https://${profile.linkedin}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="ap-link-item"
+                >
                   <FaLinkedin size={24} /> LinkedIn Profile
                 </a>
               ) : (
-                <div className="ap-link-item" style={{opacity: 0.5}}><FaLinkedin size={24} /> No LinkedIn link</div>
+                <div className="ap-link-item" style={{ opacity: 0.5 }}>
+                  <FaLinkedin size={24} /> No LinkedIn link
+                </div>
               )}
             </div>
           </div>
