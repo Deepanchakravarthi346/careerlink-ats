@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
 
 
 class User(AbstractUser):
@@ -54,7 +55,9 @@ class Profile(models.Model):
     git_hub = models.URLField()
     linkedin = models.CharField(max_length=50)
     location = models.CharField(max_length=200)
-    resume = models.FileField(upload_to="resume/", null=False)
+    resume = models.FileField(
+        upload_to="resume/", null=False, storage=RawMediaCloudinaryStorage()
+    )
     degree = models.CharField(max_length=150, null=False)
     field_of_study = models.CharField(max_length=150)
     institution = models.CharField(max_length=150)
@@ -76,15 +79,21 @@ class Application(models.Model):
     )
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=False)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
-    resume = models.FileField(upload_to="applications/", null=False)
+    resume = models.FileField(
+        upload_to="applications/", null=False, storage=RawMediaCloudinaryStorage()
+    )
     status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="Applied")
     applied_on = models.DateTimeField(auto_now_add=True)
 
 
 class RecruiterNote(models.Model):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    applicant = models.ForeignKey(User, related_name="applicant_notes", on_delete=models.CASCADE)
-    recruiter = models.ForeignKey(User, related_name="recruiter_notes", on_delete=models.CASCADE)
+    applicant = models.ForeignKey(
+        User, related_name="applicant_notes", on_delete=models.CASCADE
+    )
+    recruiter = models.ForeignKey(
+        User, related_name="recruiter_notes", on_delete=models.CASCADE
+    )
     note = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -103,15 +112,21 @@ class InterviewSchedule(models.Model):
         ("Cancelled", "Cancelled"),
     )
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
-    applicant = models.ForeignKey(User, related_name="applicant_interviews", on_delete=models.CASCADE)
-    recruiter = models.ForeignKey(User, related_name="recruiter_interviews", on_delete=models.CASCADE)
+    applicant = models.ForeignKey(
+        User, related_name="applicant_interviews", on_delete=models.CASCADE
+    )
+    recruiter = models.ForeignKey(
+        User, related_name="recruiter_interviews", on_delete=models.CASCADE
+    )
     interview_type = models.CharField(max_length=50, choices=INTERVIEW_TYPES)
     scheduled_date = models.DateTimeField()
     duration_minutes = models.IntegerField(default=30)
     location = models.CharField(max_length=255, blank=True, null=True)
     meeting_link = models.URLField(blank=True, null=True)
     notes = models.TextField(blank=True, null=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default="Scheduled")
+    status = models.CharField(
+        max_length=50, choices=STATUS_CHOICES, default="Scheduled"
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
 
@@ -121,6 +136,7 @@ class InterviewDetail(models.Model):
     Linked via OneToOneField so the existing InterviewSchedule model
     and all its queries remain completely untouched.
     """
+
     ROUND_CHOICES = (
         ("HR", "HR"),
         ("Technical", "Technical"),
@@ -150,13 +166,17 @@ class InterviewDetail(models.Model):
     )
 
     interview = models.OneToOneField(
-        InterviewSchedule,
-        on_delete=models.CASCADE,
-        related_name="detail"
+        InterviewSchedule, on_delete=models.CASCADE, related_name="detail"
     )
-    interview_round = models.CharField(max_length=50, choices=ROUND_CHOICES, default="Technical")
-    time_zone = models.CharField(max_length=50, choices=TIMEZONE_CHOICES, default="Asia/Kolkata")
-    meeting_type = models.CharField(max_length=50, choices=MEETING_TYPE_CHOICES, default="Google Meet")
+    interview_round = models.CharField(
+        max_length=50, choices=ROUND_CHOICES, default="Technical"
+    )
+    time_zone = models.CharField(
+        max_length=50, choices=TIMEZONE_CHOICES, default="Asia/Kolkata"
+    )
+    meeting_type = models.CharField(
+        max_length=50, choices=MEETING_TYPE_CHOICES, default="Google Meet"
+    )
     office_address = models.TextField(blank=True, default="")
     interviewer_name = models.CharField(max_length=150, blank=True, default="")
     recruiter_email = models.EmailField(blank=True, default="")
@@ -173,6 +193,7 @@ class ActivityLog(models.Model):
     Isolated activity timeline for tracking all recruiter actions.
     Completely independent — no existing model references this.
     """
+
     ACTION_CHOICES = (
         ("Application Submitted", "Application Submitted"),
         ("Candidate Shortlisted", "Candidate Shortlisted"),
@@ -188,8 +209,16 @@ class ActivityLog(models.Model):
     )
 
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name="activity_logs")
-    applicant = models.ForeignKey(User, on_delete=models.CASCADE, related_name="applicant_activity_logs")
-    recruiter = models.ForeignKey(User, on_delete=models.CASCADE, related_name="recruiter_activity_logs", null=True, blank=True)
+    applicant = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="applicant_activity_logs"
+    )
+    recruiter = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="recruiter_activity_logs",
+        null=True,
+        blank=True,
+    )
     action = models.CharField(max_length=100, choices=ACTION_CHOICES)
     details = models.TextField(blank=True, default="")
     created_at = models.DateTimeField(auto_now_add=True)
@@ -199,4 +228,3 @@ class ActivityLog(models.Model):
 
     def __str__(self):
         return f"{self.action} — {self.applicant.username} ({self.created_at})"
-

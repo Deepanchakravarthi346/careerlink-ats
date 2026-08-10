@@ -15,7 +15,7 @@ import {
   FaTools,
   FaLink,
   FaBriefcase,
-  FaArrowLeft
+  FaArrowLeft,
 } from "react-icons/fa";
 import Button from "./ui/Button";
 import Card from "./ui/Card";
@@ -51,7 +51,10 @@ function MyProfile() {
   if (isLoading) {
     return (
       <div className="profile-page">
-        <Skeleton type="card" style={{ height: "200px", marginBottom: "24px" }} />
+        <Skeleton
+          type="card"
+          style={{ height: "200px", marginBottom: "24px" }}
+        />
         <div className="profile-grid">
           <Skeleton type="card" style={{ height: "400px" }} />
           <Skeleton type="card" style={{ height: "300px" }} />
@@ -60,22 +63,35 @@ function MyProfile() {
     );
   }
 
-  if (!profileview) return <div className="profile-page">Profile not found.</div>;
+  if (!profileview)
+    return <div className="profile-page">Profile not found.</div>;
 
-  const skillsArray = profileview.skills?.split(",").filter(s => s.trim()) || [];
+  const skillsArray =
+    profileview.skills?.split(",").filter((s) => s.trim()) || [];
 
   return (
     <div className="profile-page">
-      <div style={{ marginBottom: '16px' }}>
+      <div style={{ marginBottom: "16px" }}>
         <BackButton />
       </div>
       <div className="profile-header-card">
         <div className="profile-header-main">
           <div className="profile-image-container">
             {profileview.profile_picture ? (
-              <img src={`${API_BASE}${profileview.profile_picture}`} alt="Profile" />
+              <img src={profileview.profile_picture} alt="Profile" />
             ) : (
-              <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-bg)', fontSize: '48px', color: 'var(--color-border)' }}>
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "var(--color-bg)",
+                  fontSize: "48px",
+                  color: "var(--color-border)",
+                }}
+              >
                 <FaUser />
               </div>
             )}
@@ -83,17 +99,31 @@ function MyProfile() {
 
           <div className="profile-info">
             <h1>{profileview.username}</h1>
-            <div className="profile-headline">{profileview.headline || "Add a professional headline"}</div>
-            
+            <div className="profile-headline">
+              {profileview.headline || "Add a professional headline"}
+            </div>
+
             <div className="profile-meta">
-              <span className="profile-meta-item"><FaMapMarkerAlt /> {profileview.location || "Location not set"}</span>
-              <span className="profile-meta-item"><FaEnvelope /> {profileview.email || "Email not set"}</span>
-              {profileview.phone && <span className="profile-meta-item"><FaPhone /> {profileview.phone}</span>}
+              <span className="profile-meta-item">
+                <FaMapMarkerAlt /> {profileview.location || "Location not set"}
+              </span>
+              <span className="profile-meta-item">
+                <FaEnvelope /> {profileview.email || "Email not set"}
+              </span>
+              {profileview.phone && (
+                <span className="profile-meta-item">
+                  <FaPhone /> {profileview.phone}
+                </span>
+              )}
             </div>
           </div>
         </div>
 
-        <Button variant="secondary" className="profile-edit-btn" onClick={() => navigate("/updateprofile")}>
+        <Button
+          variant="secondary"
+          className="profile-edit-btn"
+          onClick={() => navigate("/updateprofile")}
+        >
           <FaUserEdit /> Edit Profile
         </Button>
       </div>
@@ -106,7 +136,8 @@ function MyProfile() {
               <h2>About</h2>
             </div>
             <p className="profile-about-text">
-              {profileview.about || "No summary provided. Edit your profile to add an about section."}
+              {profileview.about ||
+                "No summary provided. Edit your profile to add an about section."}
             </p>
           </Card>
 
@@ -118,7 +149,9 @@ function MyProfile() {
             {skillsArray.length > 0 ? (
               <div className="profile-skills-list">
                 {skillsArray.map((skill, index) => (
-                  <Badge key={index} variant="secondary">{skill.trim()}</Badge>
+                  <Badge key={index} variant="secondary">
+                    {skill.trim()}
+                  </Badge>
                 ))}
               </div>
             ) : (
@@ -133,8 +166,12 @@ function MyProfile() {
             </div>
             {profileview.degree || profileview.institution ? (
               <div className="profile-education-item">
-                <span className="profile-education-degree">{profileview.degree}</span>
-                <span className="profile-education-school">{profileview.institution}</span>
+                <span className="profile-education-degree">
+                  {profileview.degree}
+                </span>
+                <span className="profile-education-school">
+                  {profileview.institution}
+                </span>
                 {(profileview.start_year || profileview.end_year) && (
                   <span className="profile-education-years">
                     {profileview.start_year} - {profileview.end_year}
@@ -155,19 +192,41 @@ function MyProfile() {
             </div>
             <div className="profile-links-list">
               {profileview.git_hub ? (
-                <a href={profileview.git_hub.startsWith('http') ? profileview.git_hub : `https://${profileview.git_hub}`} target="_blank" rel="noreferrer" className="profile-link-item">
+                <a
+                  href={
+                    profileview.git_hub.startsWith("http")
+                      ? profileview.git_hub
+                      : `https://${profileview.git_hub}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="profile-link-item"
+                >
                   <FaGithub size={20} /> GitHub Profile
                 </a>
               ) : (
-                <span className="profile-link-item" style={{opacity: 0.5}}><FaGithub size={20} /> Not provided</span>
+                <span className="profile-link-item" style={{ opacity: 0.5 }}>
+                  <FaGithub size={20} /> Not provided
+                </span>
               )}
-              
+
               {profileview.linkedin ? (
-                <a href={profileview.linkedin.startsWith('http') ? profileview.linkedin : `https://${profileview.linkedin}`} target="_blank" rel="noreferrer" className="profile-link-item">
+                <a
+                  href={
+                    profileview.linkedin.startsWith("http")
+                      ? profileview.linkedin
+                      : `https://${profileview.linkedin}`
+                  }
+                  target="_blank"
+                  rel="noreferrer"
+                  className="profile-link-item"
+                >
                   <FaLinkedin size={20} /> LinkedIn Profile
                 </a>
               ) : (
-                <span className="profile-link-item" style={{opacity: 0.5}}><FaLinkedin size={20} /> Not provided</span>
+                <span className="profile-link-item" style={{ opacity: 0.5 }}>
+                  <FaLinkedin size={20} /> Not provided
+                </span>
               )}
             </div>
           </Card>
@@ -178,10 +237,10 @@ function MyProfile() {
               <h2>Resume</h2>
             </div>
             {profileview.resume ? (
-              <Button 
-                variant="primary" 
-                style={{ width: '100%', justifyContent: 'center' }}
-                onClick={() => window.open(`${API_BASE}${profileview.resume}`, "_blank")}
+              <Button
+                variant="primary"
+                style={{ width: "100%", justifyContent: "center" }}
+                onClick={() => window.open(profileview.resume, "_blank")}
               >
                 View Resume
               </Button>
