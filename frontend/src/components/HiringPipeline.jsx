@@ -214,7 +214,7 @@ const HiringPipeline = () => {
                   onClick={() => {
                     if (user.resume) {
                       window.open(
-                        `${API_BASE}${user.resume}`,
+                        user.resume.startsWith("http") ? user.resume : `${API_BASE}${user.resume}`,
                         "_blank",
                       );
                     } else {

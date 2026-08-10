@@ -219,7 +219,7 @@ const Applicants = () => {
                   variant="secondary"
                   onClick={() => {
                     if (user.resume) {
-                      window.open(`${API_BASE}${user.resume}`, "_blank");
+                      window.open(user.resume.startsWith("http") ? user.resume : `${API_BASE}${user.resume}`, "_blank");
                     } else {
                       alert("Resume not uploaded.");
                     }

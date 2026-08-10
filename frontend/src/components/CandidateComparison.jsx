@@ -388,7 +388,7 @@ const CandidateComparison = () => {
                   <td>
                     {comparison.candidate1.resume && (
                       <a
-                        href={`${API_BASE}${comparison.candidate1.resume}`}
+                        href={comparison.candidate1.resume.startsWith("http") ? comparison.candidate1.resume : `${API_BASE}${comparison.candidate1.resume}`}
                         target="_blank"
                         rel="noreferrer"
                         className="compare-resume-link"
@@ -400,7 +400,7 @@ const CandidateComparison = () => {
                   <td>
                     {comparison.candidate2.resume && (
                       <a
-                        href={`${API_BASE}${comparison.candidate2.resume}`}
+                        href={comparison.candidate2.resume.startsWith("http") ? comparison.candidate2.resume : `${API_BASE}${comparison.candidate2.resume}`}
                         target="_blank"
                         rel="noreferrer"
                         className="compare-resume-link"
@@ -517,7 +517,7 @@ const CandidateComparison = () => {
                 <h4>🔗 Links & Resume</h4>
                 <div className="compare-links">
                   {comparison.candidate1.resume && (
-                    <a href={`${API_BASE}${comparison.candidate1.resume}`} target="_blank" rel="noreferrer" className="compare-resume-link">
+                    <a href={comparison.candidate1.resume.startsWith("http") ? comparison.candidate1.resume : `${API_BASE}${comparison.candidate1.resume}`} target="_blank" rel="noreferrer" className="compare-resume-link">
                       📄 Resume
                     </a>
                   )}
@@ -584,7 +584,7 @@ const CandidateComparison = () => {
                 <h4>🔗 Links & Resume</h4>
                 <div className="compare-links">
                   {comparison.candidate2.resume && (
-                    <a href={`${API_BASE}${comparison.candidate2.resume}`} target="_blank" rel="noreferrer" className="compare-resume-link">
+                    <a href={comparison.candidate2.resume.startsWith("http") ? comparison.candidate2.resume : `${API_BASE}${comparison.candidate2.resume}`} target="_blank" rel="noreferrer" className="compare-resume-link">
                       📄 Resume
                     </a>
                   )}
