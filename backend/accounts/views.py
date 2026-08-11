@@ -815,13 +815,17 @@ class CandidateInterviewsView(APIView):
                         "meeting_link": interview.meeting_link or "",
                         "duration_minutes": interview.duration_minutes,
                     }
-                    send_interview_scheduled_email(
-                        applicant.username,
-                        applicant.email,
-                        job.title,
-                        job.company,
-                        email_data,
-                    )
+                    import threading
+                    threading.Thread(
+                        target=send_interview_scheduled_email,
+                        args=(
+                            applicant.username,
+                            applicant.email,
+                            job.title,
+                            job.company,
+                            email_data,
+                        )
+                    ).start()
                     ActivityLog.objects.create(
                         job=job,
                         applicant=applicant,
@@ -858,13 +862,17 @@ class UpdateInterviewView(APIView):
             detail = getattr(interview, "detail", None)
             if new_status == "Cancelled" and old_status != "Cancelled":
                 recruiter_note = detail.internal_notes if detail else ""
-                send_interview_cancelled_email(
-                    interview.applicant.username,
-                    interview.applicant.email,
-                    interview.job.title,
-                    interview.job.company,
-                    recruiter_note,
-                )
+                import threading
+                threading.Thread(
+                    target=send_interview_cancelled_email,
+                    args=(
+                        interview.applicant.username,
+                        interview.applicant.email,
+                        interview.job.title,
+                        interview.job.company,
+                        recruiter_note,
+                    )
+                ).start()
                 ActivityLog.objects.create(
                     job=interview.job,
                     applicant=interview.applicant,
