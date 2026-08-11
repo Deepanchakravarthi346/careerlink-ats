@@ -86,6 +86,10 @@
   font-weight: var(--font-weight-medium);
   margin-top: var(--spacing-2);
   display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .apply-actions {

@@ -79,6 +79,16 @@ class Application(models.Model):
     )
     job = models.ForeignKey(Job, on_delete=models.CASCADE, null=False)
     applicant = models.ForeignKey(User, on_delete=models.CASCADE, null=False)
+
+    username = models.CharField(max_length=150, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    location = models.CharField(max_length=200, blank=True, null=True)
+    skills = models.TextField(blank=True, null=True)
+    degree = models.CharField(max_length=150, blank=True, null=True)
+    field_of_study = models.CharField(max_length=150, blank=True, null=True)
+    institution = models.CharField(max_length=150, blank=True, null=True)
+
     resume = models.FileField(
         upload_to="applications/", null=False, storage=RawMediaCloudinaryStorage()
     )

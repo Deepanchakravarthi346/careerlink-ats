@@ -13,6 +13,17 @@ const Jobapply = () => {
   const [jobdetails, setJobdetails] = useState({});
   const [resume, setResume] = useState(null);
   
+  const [formValues, setFormValues] = useState({
+    username: "",
+    email: "",
+    phone: "",
+    location: "",
+    skills: "",
+    degree: "",
+    field_of_study: "",
+    institution: "",
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -20,8 +31,13 @@ const Jobapply = () => {
   const navigate = useNavigate();
   const access_token = localStorage.getItem("accessTokens");
 
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prev) => ({ ...prev, [name]: value }));
+  };
+
   useEffect(() => {
-    fetch(`${API_BASE}/accounts/jobdetails/${id}`, {
+    fetch(`${API_BASE}/accounts/jobdetails/${id}/`, {
       method: "GET",
       headers: { Authorization: `Bearer ${access_token}` },
     })
@@ -34,7 +50,19 @@ const Jobapply = () => {
       headers: { Authorization: `Bearer ${access_token}` },
     })
       .then((res) => res.json())
-      .then((data) => setProfiledetails(data))
+      .then((data) => {
+        setProfiledetails(data);
+        setFormValues({
+          username: data.username || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          location: data.location || "",
+          skills: data.skills || "",
+          degree: data.degree || "",
+          field_of_study: data.field_of_study || "",
+          institution: data.institution || "",
+        });
+      })
       .catch((error) => console.error(error));
   }, [id, access_token]);
 
@@ -48,6 +76,15 @@ const Jobapply = () => {
       formData.append("applicant", profiledetails.user);
     }
     
+    formData.append("username", formValues.username);
+    formData.append("email", formValues.email);
+    formData.append("phone", formValues.phone);
+    formData.append("location", formValues.location);
+    formData.append("skills", formValues.skills);
+    formData.append("degree", formValues.degree);
+    formData.append("field_of_study", formValues.field_of_study);
+    formData.append("institution", formValues.institution);
+
     if (resume) {
       formData.append("resume", resume);
     }
@@ -108,12 +145,13 @@ const Jobapply = () => {
         <section className="apply-section">
           <h2>Your Contact Information</h2>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
-            <Input label="Full Name" value={profiledetails.username || ""} readOnly />
-            <Input label="Email" value={profiledetails.email || ""} readOnly />
-            <Input label="Phone" value={profiledetails.phone || ""} readOnly />
+            <Input label="Full Name" name="username" value={formValues.username} onChange={handleInputChange} />
+            <Input label="Email" name="email" value={formValues.email} onChange={handleInputChange} />
+            <Input label="Phone" name="phone" value={formValues.phone} onChange={handleInputChange} />
+            <Input label="Location" name="location" value={formValues.location} onChange={handleInputChange} />
           </div>
-          <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)' }}>
-            To update your contact information, please visit your <Link to="/myprofile" style={{ color: 'var(--color-primary)' }}>Profile</Link>.
+          <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', marginTop: '8px' }}>
+            Edits here apply only to this application. To update your permanent contact information, please visit your <Link to="/myprofile" style={{ color: 'var(--color-primary)' }}>Profile</Link>.
           </p>
         </section>
 
@@ -121,13 +159,24 @@ const Jobapply = () => {
           <h2>Resume</h2>
           <div className="resume-upload-box">
             <FaCloudUploadAlt style={{ fontSize: '48px', color: 'var(--color-border)', marginBottom: '16px' }} />
-            <div style={{ marginBottom: '16px' }}>
-              <strong>Upload a new resume</strong> or we will use your default profile resume.
-            </div>
+
+            {!resume && profiledetails.resume && (
+              <div className="resume-filename" style={{ color: 'var(--color-text-secondary)', marginBottom: '16px', fontSize: '14px' }}>
+                <FaFilePdf style={{ verticalAlign: 'middle', marginRight: '4px' }}/>
+                {profiledetails.resume.split('/').pop()}
+              </div>
+            )}
+
+            {resume && (
+              <div className="resume-filename" style={{ marginBottom: '16px', fontSize: '14px' }}>
+                <FaFilePdf style={{ verticalAlign: 'middle', marginRight: '4px' }}/>
+                {resume.name}
+              </div>
+            )}
             
             <label>
               <Button variant="secondary" type="button" onClick={() => document.getElementById('resume-upload').click()}>
-                Choose File
+                Choose New Resume
               </Button>
               <input
                 id="resume-upload"
@@ -137,19 +186,6 @@ const Jobapply = () => {
                 onChange={(e) => setResume(e.target.files[0])}
               />
             </label>
-
-            {resume && (
-              <div className="resume-filename">
-                <FaFilePdf style={{ verticalAlign: 'middle', marginRight: '4px' }}/> 
-                {resume.name}
-              </div>
-            )}
-            {!resume && profiledetails.resume && (
-              <div className="resume-filename" style={{ color: 'var(--color-text-secondary)' }}>
-                <FaFilePdf style={{ verticalAlign: 'middle', marginRight: '4px' }}/>
-                Using default: {profiledetails.resume.split('/').pop()}
-              </div>
-            )}
           </div>
         </section>
 

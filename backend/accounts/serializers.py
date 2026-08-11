@@ -65,7 +65,11 @@ class Job_save_serializer(ModelSerializer):
 
     class Meta:
         model = Application
-        fields = ["job", "applicant", "resume"]
+        fields = [
+            "job", "applicant", "resume",
+            "username", "email", "phone", "location",
+            "skills", "degree", "field_of_study", "institution"
+        ]
 
 
 class See_appliedjobs_serializer(ModelSerializer):
