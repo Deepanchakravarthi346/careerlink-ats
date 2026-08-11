@@ -1,8 +1,8 @@
 """
-CareerConnect ATS — Enterprise Email Service
+CareerConnect ATS - Enterprise Email Service
 =============================================
 Modular, reusable email utility functions.
-Views only call these functions — no email logic in views.py.
+Views only call these functions - no email logic in views.py.
 
 Designed to work with Django Console backend (development) and
 can be switched to SMTP/SendGrid by changing settings.py only.
@@ -19,14 +19,14 @@ logger = logging.getLogger(__name__)
 
 def _send_email(subject, template_name, context, recipient_email):
     """
-    Internal helper — renders an HTML template and sends the email.
+    Internal helper - renders an HTML template and sends the email.
     All public functions delegate to this.
     
     Returns True on success, False on failure (never raises).
     """
     try:
         if not recipient_email:
-            logger.warning(f"Email skipped — no recipient email for template '{template_name}'")
+            logger.warning(f"Email skipped - no recipient email for template '{template_name}'")
             return False
 
         html_message = render_to_string(f"emails/{template_name}", context)
@@ -40,11 +40,11 @@ def _send_email(subject, template_name, context, recipient_email):
             html_message=html_message,
             fail_silently=False,
         )
-        logger.info(f"Email sent: '{subject}' → {recipient_email}")
+        logger.info(f"Email sent: '{subject}' -> {recipient_email}")
         return True
 
     except Exception as e:
-        logger.error(f"Email failed: '{subject}' → {recipient_email} | Error: {e}")
+        logger.error(f"Email failed: '{subject}' -> {recipient_email} | Error: {e}")
         return False
 
 
@@ -55,7 +55,7 @@ def _send_email(subject, template_name, context, recipient_email):
 def send_shortlisted_email(candidate_name, candidate_email, job_title, company_name):
     """Send email when a candidate is shortlisted."""
     return _send_email(
-        subject=f"Great News! You've Been Shortlisted — {job_title} at {company_name}",
+        subject=f"Great News! You've Been Shortlisted - {job_title} at {company_name}",
         template_name="shortlisted.html",
         context={
             "candidate_name": candidate_name,
@@ -69,7 +69,7 @@ def send_shortlisted_email(candidate_name, candidate_email, job_title, company_n
 def send_rejected_email(candidate_name, candidate_email, job_title, company_name):
     """Send email when a candidate is rejected."""
     return _send_email(
-        subject=f"Update on Your Application — {job_title} at {company_name}",
+        subject=f"Update on Your Application - {job_title} at {company_name}",
         template_name="rejected.html",
         context={
             "candidate_name": candidate_name,
@@ -83,7 +83,7 @@ def send_rejected_email(candidate_name, candidate_email, job_title, company_name
 def send_offer_email(candidate_name, candidate_email, job_title, company_name):
     """Send email when an offer is extended."""
     return _send_email(
-        subject=f"Offer Letter — {job_title} at {company_name}",
+        subject=f"Offer Letter - {job_title} at {company_name}",
         template_name="offer_sent.html",
         context={
             "candidate_name": candidate_name,
@@ -97,7 +97,7 @@ def send_offer_email(candidate_name, candidate_email, job_title, company_name):
 def send_hired_email(candidate_name, candidate_email, job_title, company_name):
     """Send email when a candidate is hired."""
     return _send_email(
-        subject=f"Welcome Aboard! — {job_title} at {company_name}",
+        subject=f"Welcome Aboard! - {job_title} at {company_name}",
         template_name="hired.html",
         context={
             "candidate_name": candidate_name,
@@ -126,7 +126,7 @@ def send_status_change_email(candidate_name, candidate_email, job_title, company
         return handler(candidate_name, candidate_email, job_title, company_name)
 
     # For statuses without dedicated emails (Applied, Viewed, etc.)
-    logger.info(f"No email template for status '{new_status}' — skipping email.")
+    logger.info(f"No email template for status '{new_status}' - skipping email.")
     return False
 
 
@@ -156,7 +156,7 @@ def send_interview_scheduled_email(candidate_name, candidate_email, job_title, c
         "duration_minutes": interview_data.get("duration_minutes", 30),
     }
     return _send_email(
-        subject=f"Interview Invitation — {job_title} at {company_name}",
+        subject=f"Interview Invitation - {job_title} at {company_name}",
         template_name="interview_invitation.html",
         context=context,
         recipient_email=candidate_email,
@@ -182,7 +182,7 @@ def send_interview_rescheduled_email(candidate_name, candidate_email, job_title,
         "duration_minutes": interview_data.get("duration_minutes", 30),
     }
     return _send_email(
-        subject=f"Interview Rescheduled — {job_title} at {company_name}",
+        subject=f"Interview Rescheduled - {job_title} at {company_name}",
         template_name="interview_rescheduled.html",
         context=context,
         recipient_email=candidate_email,
@@ -192,7 +192,7 @@ def send_interview_rescheduled_email(candidate_name, candidate_email, job_title,
 def send_interview_cancelled_email(candidate_name, candidate_email, job_title, company_name, recruiter_note=""):
     """Send email when an interview is cancelled."""
     return _send_email(
-        subject=f"Interview Update — {job_title} at {company_name}",
+        subject=f"Interview Update - {job_title} at {company_name}",
         template_name="interview_cancelled.html",
         context={
             "candidate_name": candidate_name,
