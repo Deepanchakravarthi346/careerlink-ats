@@ -17,6 +17,60 @@ import Button from "./ui/Button";
 
 const API_BASE = import.meta.env.VITE_API_URL || API_BASE;
 
+const compressImage = (file) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target.result;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 1600;
+        const MAX_HEIGHT = 1600;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = Math.round((height *= MAX_WIDTH / width));
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = Math.round((width *= MAX_HEIGHT / height));
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+
+        const ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+
+        canvas.toBlob(
+          (blob) => {
+            if (blob) {
+              const compressedFile = new File([blob], file.name, {
+                type: "image/jpeg",
+                lastModified: Date.now(),
+              });
+              resolve(compressedFile);
+            } else {
+              reject(new Error("Canvas to Blob failed"));
+            }
+          },
+          "image/jpeg",
+          0.8
+        );
+      };
+      img.onerror = (error) => reject(error);
+    };
+    reader.onerror = (error) => reject(error);
+  });
+};
+
 const Update_profile = () => {
   const [profileview, setProfileview] = useState({});
   const [isSaving, setIsSaving] = useState(false);
@@ -39,9 +93,26 @@ const Update_profile = () => {
     setProfileview((prev) => ({ ...prev, [name]: value }));
   };
 
-  function saveprofile(e) {
+  async function saveprofile(e) {
     e.preventDefault();
     setIsSaving(true);
+
+    let profilePicFile = null;
+    if (profileview.profile_picture instanceof File) {
+      if (profileview.profile_picture.size < 1024 * 1024) {
+        // Less than 1MB, no need to compress
+        profilePicFile = profileview.profile_picture;
+      } else {
+        try {
+          profilePicFile = await compressImage(profileview.profile_picture);
+        } catch (error) {
+          console.error("Image compression failed:", error);
+          alert("Failed to process the selected image. Please try a different photo.");
+          setIsSaving(false);
+          return;
+        }
+      }
+    }
 
     const formData = new FormData();
     formData.append("headline", profileview.headline || "");
@@ -55,8 +126,8 @@ const Update_profile = () => {
     formData.append("git_hub", profileview.git_hub || "");
     formData.append("linkedin", profileview.linkedin || "");
 
-    if (profileview.profile_picture instanceof File) {
-      formData.append("profile_picture", profileview.profile_picture);
+    if (profilePicFile) {
+      formData.append("profile_picture", profilePicFile);
     }
 
     if (profileview.resume instanceof File) {
